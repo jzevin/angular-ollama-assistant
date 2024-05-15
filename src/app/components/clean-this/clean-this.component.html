@@ -1,0 +1,32 @@
+
+<div class="grid">
+  <div class="col-4 left">
+    <div class="controls">
+      <h2>Choose Your Analyst:</h2>
+      <div class="flex p-fluid gap-2">
+        <p-dropdown [options]="settings" (onChange)="onSettingsChange($event)" optionLabel="type" placeholder="Select you Analyst" [(ngModel)]="selectedSettings"></p-dropdown>
+        <p-checkbox label="Explain Changes" name="explain" binary="true" [(ngModel)]="shouldExplainChanges" (onChange)="foobar($event)"></p-checkbox>
+        <p-checkbox label="Stream" name="stream" binary="true" [(ngModel)]="shouldStream"></p-checkbox>
+        <p-checkbox label="JSON" name="json" binary="true" [(ngModel)]="shouldFormatOutputAsJson"></p-checkbox>
+      </div>
+      <textarea id="float-input" [rows]="this.hostElementHeight" class="w-full" pInputTextarea [(ngModel)]="message"></textarea>
+      <div class="flex justify-content-center p-fluid gap-2">
+        <div class="flex-auto">
+          <p-inputNumber [(ngModel)]="numVersions" [showButtons]="true" inputId="stacked" [suffix]="numVersions > 1 ? ' versions' : ' version'" min="1" max="6"></p-inputNumber>
+        </div>
+        <div class="flex-auto"><p-button label="Send" (onClick)="send()" [loading]="loading"></p-button></div>
+      </div>
+      
+    </div>
+    <!-- examples -->
+    <p-divider type="dashed" align="center">Examples:</p-divider>
+    <ol class="examples">
+      <li class="example" (click)="onExample(example)" *ngFor="let example of selectedSettings?.examples">{{ example }}</li>
+    </ol>
+  </div>
+  <div class="col-8 right">
+    <div class="output" *ngIf="output$ |async as output">
+      {{ output.join('') }}
+    </div>
+  </div>
+</div>

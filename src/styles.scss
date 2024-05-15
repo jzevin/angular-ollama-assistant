@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.message {
+  h1, h2, h3, h4, p, ul {
+    // margin: 0;
+  }
+  pre {
+    text-wrap: unset;
+    color: var(--purple-300);
+  }
+}
+
+:root {
+  font-size: 1.25rem;
+}

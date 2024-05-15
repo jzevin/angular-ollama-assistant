@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "zevai",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
@@ -30,7 +30,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "primeng/resources/themes/lara-dark-blue/theme.css",
+              "primeng/resources/primeng.min.css",
+              "primeflex/primeflex.css"
             ],
             "scripts": []
           },

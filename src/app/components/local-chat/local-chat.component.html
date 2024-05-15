@@ -1,0 +1,42 @@
+@if (viewModel$ | async; as vm) {
+  <div class="chat-controls">
+    <p-dropdown [options]="modelSelections" optionLabel="name" optionValue="code" [(ngModel)]="vm.selectedModel" [disabled]="vm.loading"></p-dropdown>
+    <p-button label="new chat" size="small" icon="pi pi-times" [outlined]="true" [rounded]="true" severity="secondary" [raised]="true" (onClick)="newChat()" [disabled]="vm.loading"></p-button>
+    <p-button label="history" size="small" icon="pi pi-book" [outlined]="true" [rounded]="true" severity="secondary" [raised]="true" (onClick)="isSidebarVisible = true" [disabled]="vm.loading"></p-button>
+    <p-checkbox [(ngModel)]="vm.shouldAnswerAsMarkdown" [binary]="true" inputId="binary" label="Markdown" [disabled]="vm.loading"></p-checkbox>
+  </div>
+  <p-sidebar [(visible)]="isSidebarVisible">
+    <h3>ZevGpt History</h3>
+    <ol>
+      @for (history of getAllChats(); track $index) {
+        <li>
+          <p-button label="{{ history.messages[0].content }}..." size="small" icon="pi pi-times" [outlined]="true" [rounded]="true" severity="secondary" [raised]="true" (onClick)="loadChat(history.messages[history.messages.length - 1].timestamp); isSidebarVisible = false"></p-button>
+        </li>
+      }
+    </ol>
+</p-sidebar>
+  <div class="chat-wrap">
+    <div class="output-wrap">
+      @for (message of vm.messages; track message.content) {
+        <div class="message-wrap">
+          <div class="from">
+            <span>{{ message.role }}</span>
+          </div>
+          @for (img of message.images; track $index) {
+            <img [src]="toDataUrl(img)" alt="">
+          }
+          <div class="message" [innerHTML]="message.role === 'assistant' ? (message.content | markdown2html) : message.content"></div>
+        </div>
+      }
+    </div>
+    <div class="input-wrap">
+      <input type="file" accept="image/*" #fileInput (change)="onFileSelected($event)" class="hidden">
+      <img class="img-upload" [src]="toDataUrl(currentAttachment ?? '')" alt="">
+      <p-inputGroup>
+        <button pButton icon="pi pi-paperclip" class="p-button-secondary" (click)="onUpload($event)"></button>
+        <input #promptInput type="text" pInputText placeholder="Message ZevGPT" (keypress)="$event.key === 'Enter' ? onSend() : null" [(ngModel)]="vm.prompt" [disabled]="vm.loading" tabindex="0" />
+        <button type="button" pButton icon="pi pi-send" class="p-button-primary" [loading]="vm.loading" (click)="onSend()"></button>
+      </p-inputGroup>
+    </div>
+  </div>
+}
